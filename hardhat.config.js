@@ -4,6 +4,9 @@ require("@nomicfoundation/hardhat-toolbox");
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.17",
+  mocha: {
+    timeout: 300000
+  },
   networks: {
     hardhat: {
       accounts: {
@@ -13,6 +16,9 @@ module.exports = {
     },
     localhost: {
       url: "http://127.0.0.1:8545",
+    },
+    ganache: {
+      url: "http://ganache:8545",
     },
   }
 };
