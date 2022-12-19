@@ -4,7 +4,7 @@ const { ethers } = require("hardhat")
 
 describe("Main test", function () {
 
-    beforeEach(async function() {
+    before(async function() {
       const signers = await ethers.getSigners();
       this.deployer = signers[0];
       this.lastBuyer = signers[1]
@@ -20,6 +20,19 @@ describe("Main test", function () {
         this.token.address,
         this.fundsRequired,
       );
+
+      const contracts = {
+        token: this.token.address,
+        token_sale: this.tokenSale.address,
+      }
+      const data = JSON.stringify(contracts)
+      fs.writeFile('contracts.json', data, err => {
+        if (err) {
+          throw err
+        }
+        console.log('JSON data is saved.')
+      })
+
       await this.token.transfer(this.tokenSale.address, this.fundsRequired);
     })
 
@@ -72,20 +85,6 @@ describe("Main test", function () {
 //            to: this.tokenSale.address
 //          }
 //        )).to.be.revertedWith("sold out")
-      })
-
-      it("save contracts address", async function() {
-        const contracts = {
-          token: this.token.address,
-          token_sale: this.tokenSale.address,
-        }
-        const data = JSON.stringify(contracts)
-        fs.writeFile('contracts.json', data, err => {
-          if (err) {
-            throw err
-          }
-          console.log('JSON data is saved.')
-        })
       })
     });
 })
